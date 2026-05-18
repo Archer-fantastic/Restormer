@@ -1,0 +1,115 @@
+# general settings
+name: GaussianGrayDenoising_RestormerSigma25_MemoryOptimized
+model_type: ImageCleanModel
+scale: 1
+num_gpu: 1
+manual_seed: 100
+
+# dataset and data loader settings
+datasets:
+  train:
+    name: TrainSet
+    type: Dataset_GaussianDenoising
+    sigma_type: constant
+    sigma_range: 25
+    in_ch: 1
+    dataroot_gt: Denoising/Datasets/train/XRAY  # 您的20张图放在这里
+    dataroot_lq: none
+    geometric_augs: true
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+    use_shuffle: true
+    num_worker_per_gpu: 2  # 适当增加worker数量
+    batch_size_per_gpu: 1  # 保持batch size=1以节省内存
+    gt_size: 256  # 减小patch size以节省内存
+    gt_sizes: [128, 256, 384]  # 移除512的阶段
+    mini_batch_sizes: [2, 1, 1]  # 对应调整
+    iters: [5000, 10000, 5000]  # 每个阶段的迭代次数，总计20000
+    dataset_enlarge_ratio: 10  # 减少扩充比例以节省内存
+    prefetch_mode: cuda  # 使用CUDA预取以提高性能
+    pin_memory: true  # 启用pin_memory以配合CUDAPrefetcher
+
+  val:
+    name: ValSet
+    type: Dataset_GaussianDenoising
+    sigma_test: 25
+    in_ch: 1
+    dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\test\BSD68
+    dataroot_lq: none
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: Restormer
+  inp_channels: 1
+  out_channels: 1
+  dim: 48
+  num_blocks: [4,6,6,8]
+  num_refinement_blocks: 4
+  heads: [1,2,4,8]
+  ffn_expansion_factor: 2.66
+  bias: False
+  LayerNorm_type: BiasFree
+  dual_pixel_task: False
+
+# path - 使用预训练模型进行微调
+path:
+  pretrain_network_g: ./Denoising/pretrained_models/gaussian_gray_denoising_blind.pth
+  strict_load_g: true
+  resume_state: ~
+
+# training settings
+train:
+  total_iter: 20000  # 减少总迭代次数
+  warmup_iter: 300  # 减少预热迭代
+  use_grad_clip: true
+  use_amp: true  # 启用自动混合精度训练
+  amp_level: O1  # 混合精度级别
+  scheduler:
+    type: CosineAnnealingRestartCyclicLR
+    periods: [10000, 20000]
+    restart_weights: [1, 1]
+    eta_mins: [0.00001, 0.000001]
+  mixing_augs:
+    mixup: true
+    mixup_beta: 1.2
+    use_identity: true
+  optim_g:
+    type: AdamW
+    lr: !!float 1e-5  # 使用很小的学习率进行微调
+    weight_decay: !!float 1e-4
+    betas: [0.9, 0.999]
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1
+    reduction: mean
+
+# validation settings
+val:
+  window_size: 8
+  val_freq: !!float 1000  # 减少验证频率以提高训练速度
+  save_img: false
+  rgb2bgr: true
+  use_image: false
+  max_minibatch: 2
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+
+# logging settings
+logger:
+  print_freq: 100  # 减少打印频率以提高训练速度
+  save_checkpoint_freq: !!float 2000  # 减少保存频率以节省磁盘空间
+  use_tb_logger: false
+  wandb:
+    project: null
+    resume_id: ~
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500

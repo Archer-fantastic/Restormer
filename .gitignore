@@ -1,0 +1,43 @@
+.ipynb_checkpoints/
+*.pyc
+*.png
+*.tif
+*.jpg
+*.bmp
+*.pth
+*.mat
+*.npy
+.DS_Store/
+
+# Python
+__pycache__/
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+
+# 数据与结果（大文件）
+results/
+experiments/
+tb_logger/
+
+# 环境
+env/
+venv/
+
+
+Denoising/pretrained_models
+Denoising/results
+
+Deraining/pretrained_models
+Deraining/results
+
+Motion_Deblurring/pretrained_models
+Motion_Deblurring/results
+
+Defocus_Deblurring/pretrained_models
+Defocus_Deblurring/results

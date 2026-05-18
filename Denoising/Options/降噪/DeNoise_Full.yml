@@ -1,0 +1,135 @@
+# 训练配置 - X-RAY 焊缝图像去噪 (完整版本)
+# 充分利用 RTX 5090 显卡性能
+
+name: XRAY_Denoising_Restormer_Full
+model_type: ImageCleanModel
+scale: 1
+num_gpu: 1  # RTX 5090
+manual_seed: 100
+
+datasets:
+  train:
+    name: TrainSet
+    type: Dataset_GaussianDenoising
+    sigma_type: random  # 随机噪声级别
+    sigma_range: [0, 50]  # 噪声范围
+    in_ch: 1  # 灰度图像
+
+    # 你的训练数据路径
+    dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\train\DFWB
+    dataroot_lq: none
+
+    geometric_augs: true  # 启用数据增强
+
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+    use_shuffle: true
+    num_worker_per_gpu: 0  # 增加数据加载线程
+    # batch_size_per_gpu: 8  # RTX 5090 可以处理更大批量
+
+    # 渐进式训练设置
+    batch_size_per_gpu: 4
+    mini_batch_sizes: [4, 2, 1]
+    iters: [60000, 40000, 20000]
+    gt_size: 256  # 更大的输入图像
+    gt_sizes: [128, 192, 256]
+
+    dataset_enlarge_ratio: 1
+    prefetch_mode: ~
+
+  val:
+    name: ValSet
+    type: Dataset_GaussianDenoising
+    sigma_test: 25
+    in_ch: 1
+    dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\val\SIDD\target_crops
+    dataroot_lq: none
+    io_backend:
+      type: disk
+
+network_g:
+  type: Restormer
+  inp_channels: 1
+  out_channels: 1
+  dim: 64  # 增大模型维度
+  num_blocks: [4, 6, 6, 8]  # 完整模型深度
+  num_refinement_blocks: 4  # 完整 refinement blocks
+  heads: [1, 2, 4, 8]  # 完整注意力头数
+  ffn_expansion_factor: 2.66  # 完整 FFN 扩展因子
+  bias: false
+  LayerNorm_type: WithBias
+  dual_pixel_task: false
+
+path:
+  pretrain_network_g: ./Denoising/pretrained_models/gaussian_gray_denoising_blind.pth
+  strict_load_g: false
+  resume_state: ~
+
+# training settings
+train:
+  total_iter: 120000  # 完整训练迭代次数
+  warmup_iter: -1 # no warm up
+  use_grad_clip: true
+
+  # 完整学习率调度
+  scheduler:
+    type: CosineAnnealingRestartCyclicLR
+    periods: [60000, 60000]       
+    restart_weights: [1,1]
+    eta_mins: [0.0003,0.000001]   
+
+  mixing_augs:
+    mixup: true  # 启用 mixup
+    mixup_beta: 1.2
+    use_identity: true
+
+  optim_g:
+    type: AdamW
+    lr: !!float 3e-4
+    weight_decay: !!float 1e-4
+    betas: [0.9, 0.999]
+  
+  # losses
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1
+    reduction: mean
+
+logger:
+  print_freq: 100
+  save_checkpoint_freq: 5000  # 标准保存频率
+  use_tb_logger: false
+  wandb:
+    project: null
+    resume_id: ~
+
+validation:
+  freq: 5000  # 标准验证频率
+  save_img: true
+
+  datasets:
+    val_1:
+      name: Val1
+      type: Dataset_GaussianDenoising
+      sigma_test: 15
+      in_ch: 1
+      dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\test
+      io_backend:
+        type: disk
+
+# val settings (for validation during training)
+val:
+  window_size: 8
+  val_freq: !!float 5e3
+  save_img: false
+  rgb2bgr: true
+  use_image: false
+  max_minibatch: 4  # 验证批量大小
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false

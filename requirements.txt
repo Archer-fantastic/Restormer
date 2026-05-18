@@ -1,0 +1,40 @@
+# ==================== Restormer 项目依赖 ====================
+# 创建日期: 2026-04-23
+
+# ==================== PyTorch 核心生态 ====================
+# 注意: torch 需要根据 CUDA 版本手动安装
+# CUDA 11.x: pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 -f https://download.pytorch.org/whl/torch_stable.html
+# CUDA 12.x: pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 -f https://download.pytorch.org/whl/torch_stable.html
+torch>=1.10.0
+torchvision>=0.11.0
+
+# ==================== 核心架构依赖 ====================
+einops>=0.4.0                    # Restormer 必需的张量重排操作
+
+# ==================== 图像处理 ====================
+numpy>=1.19.0
+opencv-python>=4.5.0             # 或 opencv-python-headless (无GUI服务器)
+scikit-image>=0.18.0             # img_as_ubyte 等
+Pillow>=8.0.0                   # 图像格式支持
+
+# ==================== 科学计算 / 数据处理 ====================
+PyYAML>=5.4.0                   # YAML 配置文件解析
+scipy>=1.7.0                     # MATLAB .mat 文件读写
+h5py>=3.0.0                      # HDF5 格式数据
+lmdb>=1.2.0                       # LMDB 高速数据库(训练时需要)
+
+# ==================== 工具库 ====================
+tqdm>=4.62.0                     # 进度条显示
+natsort>=8.0.0                    # 自然排序文件名
+matplotlib>=3.4.0                 # 训练曲线绘图(tools/实验结果绘图.py)
+
+# ==================== GUI (仅运行 ui/denoise_gui.py 时需要) ====================
+PyQt5>=5.15.0
+
+# ==================== 可选依赖 ====================
+wandb                            # 实验跟踪(可选)
+requests                         # 文件下载工具
+
+# ==================== 构建依赖 (编译CUDA扩展时需要) ====================
+setuptools>=50.0
+cython>=0.29.0
