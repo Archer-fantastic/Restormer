@@ -5,9 +5,9 @@
 NAME = "DCK_128_25"
 TOTAL_ITER = 50000  # 总迭代次数 - 修改这里可以自动更新其他相关参数
 SIGMA = 25
-Train_Dataroot_GT = r"Z:\14-调试数据\lxm\Dataset\DeNoise_XRAY\电池壳\DCK_train_128"
+Train_Dataroot_GT = r"./Denoising/Datasets/train/DCK"
 Train_Dataroot_LQ = "none"
-Val_Dataroot_GT = r"Z:\14-调试数据\lxm\Dataset\DeNoise_XRAY\电池壳\DCK_val_128"
+Val_Dataroot_GT = r"./Denoising/Datasets/val/DCK"
 Val_Dataroot_LQ = "none"
 
 Pretrain_Network_G = r"./Denoising/pretrained_models/gaussian_gray_denoising_blind.pth"

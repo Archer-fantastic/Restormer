@@ -34,8 +34,8 @@ print("Imports done")
 
 parser = argparse.ArgumentParser(description='Gasussian Grayscale Denoising using Restormer')
 
-parser.add_argument('--input_dir', default=r'Z:\14-调试数据\lxm\Dataset\DeNoise_XRAY\原始数据\DCK', type=str, help='Directory of validation images')
-parser.add_argument('--result_dir', default=r'Z:\14-调试数据\lxm\Projects\Restormer\results\01.电池壳_训练降噪效果', type=str, help='Directory for results')
+parser.add_argument('--input_dir', default='./test_input', type=str, help='Directory of validation images')
+parser.add_argument('--result_dir', default='./results/gray_denoise', type=str, help='Directory for results')
 parser.add_argument('--weights', default=r'experiments\DCK\DCK_512_15_5W\models\net_g_best.pth', type=str, help='Path to weights')
 parser.add_argument('--config', default=r'Denoising\Options\XRAY\DCK\DCK_512_15.py', type=str, help='Path to configuration file (YAML or Python)')
 parser.add_argument('--sigmas', default='15', type=str, help='Sigma values')

@@ -8,8 +8,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # XRAY数据集路径
-src = r'Z:\14-调试数据\lxm\Dataset\DeNoise_XRAY\HJJ\HJJ_原图数据\BMP原图\验证图像'
-tar = r'Z:\14-调试数据\lxm\Dataset\DeNoise_XRAY\HJJ\HJJ_val_128'
+src = './Denoising/Datasets/XRAY/HJJ/raw'
+tar = './Denoising/Datasets/XRAY/HJJ/val_128'
 
 os.makedirs(tar, exist_ok=True)
 

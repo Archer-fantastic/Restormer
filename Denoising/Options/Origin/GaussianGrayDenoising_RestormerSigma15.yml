@@ -13,7 +13,7 @@ datasets:
     sigma_type: constant
     sigma_range: 15
     in_ch: 1    ## Grayscale image
-    dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\train\DFWB
+    dataroot_gt: ./Denoising/Datasets/train/DFWB
     dataroot_lq: none
     geometric_augs: true
 
@@ -50,7 +50,7 @@ datasets:
     type: Dataset_GaussianDenoising
     sigma_test: 15
     in_ch: 1    ## Grayscale image
-    dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\test\BSD68
+    dataroot_gt: ./Denoising/Datasets/test/BSD68
     dataroot_lq: none
     io_backend:
       type: disk

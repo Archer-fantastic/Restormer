@@ -13,7 +13,7 @@ datasets:
     sigma_type: constant
     sigma_range: 15
     in_ch: 1
-    dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_XRAY\焊缝\HF_train_256  # 您的20张图放在这里
+    dataroot_gt: ./Denoising/Datasets/train/HF  # 您的20张图放在这里
     dataroot_lq: none
     geometric_augs: true
     filename_tmpl: '{}'
@@ -35,7 +35,7 @@ datasets:
     type: Dataset_GaussianDenoising
     sigma_test: 15
     in_ch: 1
-    dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_XRAY\焊缝\HF_val_256
+    dataroot_gt: ./Denoising/Datasets/val/HF
     dataroot_lq: none
     io_backend:
       type: disk

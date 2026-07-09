@@ -5,9 +5,9 @@
 NAME = "XRAY_Denoising_Restormer_Light"
 TOTAL_ITER = 20000  # 总迭代次数 - 修改这里可以自动更新其他相关参数
 SIGMA = 15
-Train_Dataroot_GT = "Z:\14-调试数据\lxm\Dataset\DeNoise_XRAY\HJJ\HJJ_train_512"
+Train_Dataroot_GT = "./Denoising/Datasets/train/HJJ"
 Train_Dataroot_LQ = "none"
-Val_Dataroot_GT = "Z:\14-调试数据\lxm\Dataset\DeNoise_XRAY\HJJ\HJJ_val_512"
+Val_Dataroot_GT = "./Denoising/Datasets/val/HJJ"
 Val_Dataroot_LQ = "none"
 
 Pretrain_Network_G = "./Denoising/pretrained_models/gaussian_gray_denoising_blind.pth"

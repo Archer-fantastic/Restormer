@@ -16,7 +16,7 @@ datasets:
     in_ch: 1  # 灰度图像
 
     # 你的训练数据路径
-    dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\train\DFWB
+    dataroot_gt: ./Denoising/Datasets/train/DFWB
     dataroot_lq: none
 
     geometric_augs: true  # 数据增强
@@ -43,7 +43,7 @@ datasets:
     type: Dataset_GaussianDenoising
     sigma_test: 25
     in_ch: 1
-    dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\val
+    dataroot_gt: ./Denoising/Datasets/val
     dataroot_lq: none
     io_backend:
       type: disk
@@ -116,7 +116,7 @@ validation:
       type: Dataset_GaussianDenoising
       sigma_test: 15
       in_ch: 1
-      dataroot_gt: Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\test
+      dataroot_gt: ./Denoising/Datasets/test
       io_backend:
         type: disk
 

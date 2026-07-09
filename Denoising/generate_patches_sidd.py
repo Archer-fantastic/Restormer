@@ -8,8 +8,8 @@ from tqdm import tqdm
 from pdb import set_trace as stx
 
 
-src = r'Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\Downloads\SIDD'
-tar = r'Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets\train\SIDD'
+src = './Denoising/Datasets/Downloads/SIDD'
+tar = './Denoising/Datasets/train/SIDD'
 
 lr_tar = os.path.join(tar, 'input_crops')
 hr_tar = os.path.join(tar, 'target_crops')

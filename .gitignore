@@ -28,6 +28,7 @@ tb_logger/
 # 环境
 env/
 venv/
+.venv/
 
 
 Denoising/pretrained_models
@@ -38,6 +39,8 @@ Deraining/results
 
 Motion_Deblurring/pretrained_models
 Motion_Deblurring/results
+
+
 
 Defocus_Deblurring/pretrained_models
 Defocus_Deblurring/results

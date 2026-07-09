@@ -447,12 +447,14 @@ class DenoiseGUI(QMainWindow):
             if 'type' in network_g:
                 del network_g['type']
             
-            # 创建模型
-            self.model = Restormer(**network_g)
-            
+            # 先检查权重文件是否存在
             if not os.path.exists(weights_path):
                 self.log(f"Error: Weights file not found: {weights_path}")
+                self.model = None  # 确保后续不会误用未加载的模型
                 return
+            
+            # 创建模型
+            self.model = Restormer(**network_g)
             
             checkpoint = torch.load(weights_path)
             self.model.load_state_dict(checkpoint['params'])

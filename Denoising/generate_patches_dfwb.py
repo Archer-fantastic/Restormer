@@ -7,7 +7,7 @@ from tqdm import tqdm
 import warnings
 warnings.filterwarnings('ignore')
 
-script_dir = r'Z:\14-调试数据\lxm\Dataset\DeNoise_Datasets'
+script_dir = './Denoising/Datasets'
 
 
 

@@ -24,9 +24,9 @@ from pdb import set_trace as stx
 
 parser = argparse.ArgumentParser(description='Gaussian Color Denoising using Restormer')
 
-parser.add_argument('--input_dir', default=r'D:\Min\Projects\VSCodeProjects\03.DeNoise\dataset\RGB_Images', type=str, help='Directory of validation images')
-parser.add_argument('--result_dir', default=r'D:\Min\Projects\VSCodeProjects\03.DeNoise\05.Restormer-main\results\RGB_Images', type=str, help='Directory for results')
-parser.add_argument('--weights', default=r'D:\Min\Projects\VSCodeProjects\03.DeNoise\05.Restormer-main\Denoising\pretrained_models\gaussian_color_denoising', type=str, help='Path to weights')
+parser.add_argument('--input_dir', default='./test_input', type=str, help='Directory of validation images')
+parser.add_argument('--result_dir', default='./results/color_denoise', type=str, help='Directory for results')
+parser.add_argument('--weights', default='./Denoising/pretrained_models/gaussian_color_denoising', type=str, help='Path to weights')
 parser.add_argument('--model_type', default='non_blind', choices=['non_blind','blind'], type=str, help='blind: single model to handle various noise levels. non_blind: separate model for each noise level.')
 parser.add_argument('--sigmas', default='15,25,50', type=str, help='Sigma values')
 parser.add_argument('--tile', type=int, default=512, help='Tile size (e.g 720). None means testing on the original resolution image')
